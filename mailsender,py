@@ -1,0 +1,32 @@
+import smtplib
+from email.message import EmailMessage
+from email.utils import formatdate
+
+# === SMTP sandbox ===
+SMTP_HOST = "mail-smtpsandbox"
+SMTP_PORT = 90
+SMTP_USER = "apikey"
+SMTP_PASS = "API_KEY"
+
+# === correo ===
+FROM_ADDRESS = "from@me"
+TO_ADDRESS = "to@me"
+SUBJECT = "Correo de prueba Python a SMTP Sandbox"
+BODY = "Hola, este es un correo de prueba de Python usando un entorno SMTP."
+
+# mensaje
+msg = EmailMessage()
+msg["From"] = FROM_ADDRESS
+msg["To"] = TO_ADDRESS
+msg["Subject"] = SUBJECT
+msg["Date"] = formatdate(localtime=True)
+msg.set_content(BODY)
+
+try:
+    with smtplib.SMTP(SMTP_HOST, SMTP_PORT) as smtp:
+        smtp.set_debuglevel(1) # DEBUG
+        # smtp.login(SMTP_USER, SMTP_PASS)
+        smtp.send_message(msg)
+        print("Correo enviado")
+except Exception as e:
+    print("Error al enviar el correo:", e)
